@@ -2,6 +2,7 @@ Initial readme
 
 # TODO
 
+- [X] Design Site - Designed on Wix
 - [ ] Setup Blank Main Page
 - [ ] Setup Blank "Article" Page
 - [ ] Create navigation bar
