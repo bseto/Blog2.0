@@ -1,0 +1,17 @@
+.main-banner {
+    background-image: url("../../assets/main-page-banner.jpg");
+    background-size: 100%;
+    height: 20em;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: white;
+    .main-banner-text {
+        width: 100%;
+        height: 100%;
+        background:rgba(0,0,0,0.55);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+}

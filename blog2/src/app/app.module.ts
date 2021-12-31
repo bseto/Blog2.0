@@ -11,13 +11,15 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from "@angular/forms";
 import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
+import { MainBannerComponent } from './main-banner/main-banner.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ArticleListComponent,
     MainPageComponent,
-    NavigationBarComponent
+    NavigationBarComponent,
+    MainBannerComponent
   ],
   imports: [
     BrowserModule,
