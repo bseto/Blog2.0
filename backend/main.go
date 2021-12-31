@@ -2,7 +2,41 @@ package main
 
 import "fmt"
 
+type Helloer interface {
+	Hello[T any] (T) 
+	TheThing[T any]() T
+}
+
+type A struct { }
+
+func (a A) Hello(someString string) {
+	fmt.Printf("hello: %v", someString)
+}
+
+func (a A) TheThing() string {
+	return "this is my payload"
+}
+
+type B struct { }
+
+func (b B) Hello(someInt int) {
+	fmt.Printf("hello: %v", someInt)
+}
+
+func (b B) TheThing() int {
+	return 5
+}
+
 func main() {
+
+	mapper := make(map[string]Helloer)
+	mapper["string"] = A{}
+	mapper["int"] = B{}
+
+	for _, helloer := range mapper {
+		helloer.Hello(helloer.TheThing())
+	}
+
 	fmt.Printf("hello world")
 	myStrings := []string {
 		"hello",

@@ -1,0 +1,23 @@
+a {
+    text-decoration: none;
+    color: black;
+}
+ul {
+    list-style: none;
+}
+
+.navbar-default {
+    display: grid;
+    grid-template-columns: 8fr 2fr;
+    justify-items: center;
+}
+
+.centered-option {
+    display: flex;
+    gap: 2em;
+}
+
+.right-option {
+    display: flex;
+    gap: 1em;
+}
