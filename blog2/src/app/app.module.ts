@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -12,6 +12,10 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from "@angular/forms";
 import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
 import { MainBannerComponent } from './main-banner/main-banner.component';
+import { BlogHighlightComponent } from './blog-highlight/blog-highlight.component';
+import { RouterModule } from '@angular/router';
+import { BlogListComponent } from './blog-list/blog-list.component';
+
 
 @NgModule({
   declarations: [
@@ -19,7 +23,9 @@ import { MainBannerComponent } from './main-banner/main-banner.component';
     ArticleListComponent,
     MainPageComponent,
     NavigationBarComponent,
-    MainBannerComponent
+    MainBannerComponent,
+    BlogHighlightComponent,
+    BlogListComponent
   ],
   imports: [
     BrowserModule,
