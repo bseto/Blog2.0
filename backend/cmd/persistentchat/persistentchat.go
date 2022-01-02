@@ -65,7 +65,9 @@ func main() {
 	rootPassword := os.Getenv("MYSQL_ROOT_PASSWORD")
 	password := os.Getenv("MYSQL_PASSWORD")
 	port := os.Getenv("MYSQL_PORT")
-	databaseName := os.Getenv("MYSQL_DATABASENAME")
+	databaseName := os.Getenv("MYSQL_DATABASE")
+	user := os.Getenv("MYSQL_USER")
+	chatPort := os.Getenv("PERSISTENTCHAT_PORT")
 
 	if port == "" {
 		log.Fatalf("requires MYSQL_PORT defined")
@@ -79,11 +81,14 @@ func main() {
 	if databaseName == "" {
 		log.Fatalf("requires MYSQL_DATABASE defined")
 	}
+	if user == "" {
+		log.Fatalf("requires MYSQL_USER defined")
+	}
 
 	database.SetupDB(
 		"root",
 		rootPassword,
-		"user",
+		user,
 		password,
 		"127.0.0.1", // will always run local
 		port,
@@ -109,7 +114,7 @@ func main() {
 		}
 		wsClient.RegisterCloseListener(hubManager)
 	})
-	address := fmt.Sprintf(":%v", port)
+	address := fmt.Sprintf(":%v", chatPort)
 	log.Infof("starting server on: %v", address)
 
 	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With"})

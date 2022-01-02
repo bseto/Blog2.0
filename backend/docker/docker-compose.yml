@@ -1,0 +1,32 @@
+version: '3.3'
+services:
+  persistentchat:
+    build: persistentchat/.
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: "${MYSQL_USER}" 
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+      MYSQL_PORT: "${MYSQL_PORT}"
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      PERSISTENTCHAT_PORT: "${PERSISTENTCHAT_PORT}"
+    ports:
+      - '${PERSISTENTCHAT_PORT}:${PERSISTENTCHAT_PORT}'
+    expose:
+      - '${PERSISTENTCHAT_PORT}'
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+    ports:
+      - '${MYSQL_PORT}:${MYSQL_PORT}'
+    expose:
+      - '${MYSQL_PORT}'
+    volumes:
+      - my-db:/var/lib/mysql
+volumes:
+  my-db:
