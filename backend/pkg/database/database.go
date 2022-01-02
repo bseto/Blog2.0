@@ -53,7 +53,7 @@ func SetupDB(
 	port,
 	databaseName string,
 ) (*gorm.DB, bool, error) {
-	rootDSN, DSN := GenerateMySQLConnectionString(
+	DSN, rootDSN := GenerateMySQLConnectionString(
 		rootUsername,
 		rootPassword,
 		username,
@@ -77,7 +77,6 @@ func SetupDB(
 }
 
 func connectWithGorm(dsn string) (*gorm.DB, error) {
-	fmt.Println("connecting gorm")
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Errorf("unable to open db: %v", err)
@@ -86,7 +85,7 @@ func connectWithGorm(dsn string) (*gorm.DB, error) {
 }
 
 func createDBIfNotExists(rootDSN, databaseName string) (createdDB bool, err error) {
-	fmt.Println("connecting to db")
+	log.Infof("connecting to db")
 	db, err := sql.Open("mysql", rootDSN)
 	if err != nil {
 		log.Errorf("unable to open database: %v\n", err)
@@ -101,6 +100,7 @@ func createDBIfNotExists(rootDSN, databaseName string) (createdDB bool, err erro
 		log.Errorf("unable to call rows affected: %v\n", err)
 		return
 	}
+	log.Infof("existing database: %v", existingDatabase)
 	if existingDatabase != databaseName {
 		createdDB = true
 		log.Infof("creating db since it doesn't exist")
@@ -109,7 +109,7 @@ func createDBIfNotExists(rootDSN, databaseName string) (createdDB bool, err erro
 			log.Errorf("unable to create database: %v\n", err)
 			return
 		}
-		fmt.Println("granting access")
+		log.Infof("granting access")
 		_, err = db.Exec(`grant all on *.* TO 'user'@'%'`)
 		if err != nil {
 			log.Errorf("unable to get rows affected: %v", err)

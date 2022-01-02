@@ -18,9 +18,11 @@ import (
 	"github.com/bseto/arcade/backend/websocket"
 	"github.com/bseto/arcade/backend/websocket/identifier"
 	"github.com/bseto/arcade/backend/websocket/registry"
+	"github.com/bseto/blog2/backend/pkg/data"
 	"github.com/bseto/blog2/backend/pkg/database"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	"gorm.io/gorm"
 )
 
 // PersistentChat implements both GameFactory interface and GameRouter interface
@@ -61,6 +63,13 @@ func (p *PersistentChat) GetGame(string, registry.Registry) game.GameRouter {
 	return p
 }
 
+type Presale struct {
+	gorm.Model
+	WalletPublicKey  data.NullString `gorm:"column:wallet_public_key"` // The public key
+	DiscordID        data.NullString `gorm:"column:discord_id"`
+	NumAllowedToMint data.NullInt64  `gorm:"column:num_allowed_to_mint"`
+}
+
 func main() {
 	rootPassword := os.Getenv("MYSQL_ROOT_PASSWORD")
 	password := os.Getenv("MYSQL_PASSWORD")
@@ -79,14 +88,13 @@ func main() {
 		log.Fatalf("requires MYSQL_PASSWORD defined")
 	}
 	if databaseName == "" {
-		databaseName = "db"
-		//log.Fatalf("requires MYSQL_DATABASE defined")
+		log.Fatalf("requires MYSQL_DATABASE defined")
 	}
 	if user == "" {
 		log.Fatalf("requires MYSQL_USER defined")
 	}
 
-	database.SetupDB(
+	db, _, err := database.SetupDB(
 		"root",
 		rootPassword,
 		user,
@@ -95,6 +103,10 @@ func main() {
 		port,
 		databaseName,
 	)
+	if err != nil {
+		log.Fatalf("unable to setup db: %v", err)
+	}
+	db.AutoMigrate(&Presale{})
 
 	r := mux.NewRouter()
 	hubManager := hubmanager.GetHubManager()
@@ -122,6 +134,6 @@ func main() {
 	originsOk := handlers.AllowedOrigins([]string{"*"}) // we need to add our domain name here one day
 	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS"})
 
-	err := http.ListenAndServe(address, handlers.CORS(originsOk, headersOk, methodsOk)(r))
+	err = http.ListenAndServe(address, handlers.CORS(originsOk, headersOk, methodsOk)(r))
 	log.Fatalf("unable to listen and serve: %v", err)
 }
