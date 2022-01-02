@@ -34,7 +34,7 @@ func (p *PersistentChat) RouteMessage(
 	messageErr error,
 	reg registry.Registry,
 ) {
-	log.Infof("got some message: %v", message)
+	log.Infof("got some message: %s", string(message))
 }
 func (p *PersistentChat) NewClient(
 	clientID identifier.Client,

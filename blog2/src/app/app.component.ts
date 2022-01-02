@@ -1,16 +1,14 @@
 import { Component } from '@angular/core';
 import { ChatService } from "./chat.service";
-import { WebsocketService } from './websocket.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  providers:[ChatService, WebsocketService]
+  providers:[ChatService]
 })
 export class AppComponent {
-  constructor(private chatService: ChatService) {
-  }
+  constructor(private chatService: ChatService) {}
 
   private message = {
     author: "byron",

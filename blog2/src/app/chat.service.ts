@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Subject } from "rxjs";
 import { map } from "rxjs/operators";
-import { WebsocketService } from "./websocket.service";
 import { WebSocketSubject } from 'rxjs/webSocket';
 
 const CHAT_URL = "ws://localhost:8081/ws/1";
