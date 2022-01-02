@@ -1,0 +1,18 @@
+version: '3.3'
+services:
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+    ports:
+      - '${MYSQL_PORT}:${MYSQL_PORT}'
+    expose:
+      - '${MYSQL_PORT}'
+    volumes:
+      - my-db:/var/lib/mysql
+volumes:
+  my-db:

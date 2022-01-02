@@ -8,9 +8,9 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/bseto/arcade/backend/game"
 	"github.com/bseto/arcade/backend/hub/hubmanager"
@@ -18,11 +18,10 @@ import (
 	"github.com/bseto/arcade/backend/websocket"
 	"github.com/bseto/arcade/backend/websocket/identifier"
 	"github.com/bseto/arcade/backend/websocket/registry"
+	"github.com/bseto/blog2/backend/pkg/database"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
-
-var port *int = flag.Int("port", 8081, "defines the port to listen and serve on")
 
 // PersistentChat implements both GameFactory interface and GameRouter interface
 type PersistentChat struct{}
@@ -63,6 +62,34 @@ func (p *PersistentChat) GetGame(string, registry.Registry) game.GameRouter {
 }
 
 func main() {
+	rootPassword := os.Getenv("MYSQL_ROOT_PASSWORD")
+	password := os.Getenv("MYSQL_PASSWORD")
+	port := os.Getenv("MYSQL_PORT")
+	databaseName := os.Getenv("MYSQL_DATABASENAME")
+
+	if port == "" {
+		log.Fatalf("requires MYSQL_PORT defined")
+	}
+	if rootPassword == "" {
+		log.Fatalf("requires MYSQL_ROOT_PASSWORD defined")
+	}
+	if password == "" {
+		log.Fatalf("requires MYSQL_PASSWORD defined")
+	}
+	if databaseName == "" {
+		log.Fatalf("requires MYSQL_DATABASE defined")
+	}
+
+	database.SetupDB(
+		"root",
+		rootPassword,
+		"user",
+		password,
+		"127.0.0.1", // will always run local
+		port,
+		databaseName,
+	)
+
 	r := mux.NewRouter()
 	hubManager := hubmanager.GetHubManager()
 	hubManager.SetupRoutes(r)
@@ -82,7 +109,7 @@ func main() {
 		}
 		wsClient.RegisterCloseListener(hubManager)
 	})
-	address := fmt.Sprintf(":%v", *port)
+	address := fmt.Sprintf(":%v", port)
 	log.Infof("starting server on: %v", address)
 
 	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With"})
