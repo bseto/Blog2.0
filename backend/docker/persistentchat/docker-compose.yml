@@ -1,22 +1,9 @@
 version: '3.3'
 services:
-  db:
-    image: mysql:5.7
-    restart: always
-    environment:
-      MYSQL_DATABASE: "${MYSQL_DATABASE}"
-      MYSQL_USER: "${MYSQL_USER}"
-      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
-      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
-    ports:
-      - '${MYSQL_PORT}:${MYSQL_PORT}'
-    expose:
-      - '${MYSQL_PORT}'
-    volumes:
-      - my-db:/var/lib/mysql
   persistentchat:
-    build: persistentchat/.
+    build: .
     restart: always
+    container_name: persistentchat
     environment:
       MYSQL_DATABASE: "${MYSQL_DATABASE}"
       MYSQL_USER: "${MYSQL_USER}" 
@@ -28,5 +15,13 @@ services:
       - '${PERSISTENTCHAT_PORT}:${PERSISTENTCHAT_PORT}'
     expose:
       - '${PERSISTENTCHAT_PORT}'
-volumes:
-  my-db:
+    networks:
+      - default
+      - app2_default
+    external_links:
+      - mysql-database:mysql_database
+networks:
+  default: # this network (app1)
+      driver: bridge
+  app2_default: # external network (app2)
+      external: true

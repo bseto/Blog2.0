@@ -99,7 +99,7 @@ func main() {
 		rootPassword,
 		user,
 		password,
-		"127.0.0.1", // will always run local
+		"db", // will always run local
 		port,
 		databaseName,
 	)
