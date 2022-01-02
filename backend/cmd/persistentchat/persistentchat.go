@@ -79,7 +79,8 @@ func main() {
 		log.Fatalf("requires MYSQL_PASSWORD defined")
 	}
 	if databaseName == "" {
-		log.Fatalf("requires MYSQL_DATABASE defined")
+		databaseName = "db"
+		//log.Fatalf("requires MYSQL_DATABASE defined")
 	}
 	if user == "" {
 		log.Fatalf("requires MYSQL_USER defined")
