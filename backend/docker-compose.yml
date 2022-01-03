@@ -15,7 +15,7 @@ services:
     volumes:
       - my-db:/var/lib/mysql
   persistentchat:
-    build: persistentchat/.
+    build: cmd/persistentchat/.
     restart: always
     environment:
       MYSQL_DATABASE: "${MYSQL_DATABASE}"

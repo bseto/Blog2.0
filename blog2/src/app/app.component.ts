@@ -16,7 +16,6 @@ export class AppComponent {
   };
 
   sendMsg() {
-    console.log("new message from client to websocket: ", this.message);
-    this.chatService.send(JSON.stringify(this.message));
+    this.chatService.send(this.message);
   }
 }

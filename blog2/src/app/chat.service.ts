@@ -35,9 +35,11 @@ export class ChatService {
       err => console.log("error: " + err),
       () => console.log("connection closed")
     );
+
+    const someSubscription = this.websocketSubject.subscribe(data => {})
   }
 
-  public send(data: string) {
+  public send(data: any) {
     this.websocketSubject.next(data);
   }
 
