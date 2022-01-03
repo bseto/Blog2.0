@@ -34,7 +34,7 @@ export class ChatService {
       console.log("on close: ", event);
     };
     this.socket.onmessage = event => {
-      console.log("on close: ", JSON.parse(event.data));
+      console.log("on message", JSON.parse(event.data));
     };
   }
 

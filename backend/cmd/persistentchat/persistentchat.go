@@ -35,7 +35,8 @@ func (p *PersistentChat) RouteMessage(
 	messageErr error,
 	reg registry.Registry,
 ) {
-	log.Infof("got some message: %s", string(message))
+	log.Infof("echoing the message: %v", string(message))
+	reg.SendToSameHub(message) // just repeat the message to all in the same hub
 }
 func (p *PersistentChat) NewClient(
 	clientID identifier.Client,
@@ -99,7 +100,7 @@ func main() {
 		rootPassword,
 		user,
 		password,
-		"db", // will always run local
+		"db", // hostname of the 'db' service on the dockerfile
 		port,
 		databaseName,
 	)
