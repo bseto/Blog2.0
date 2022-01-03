@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Subject } from "rxjs";
 import { map } from "rxjs/operators";
-import { WebSocketSubject } from 'rxjs/webSocket';
+import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 
 const CHAT_URL = "ws://localhost:8081/ws/1";
 
@@ -21,29 +21,27 @@ export class Auth {
 
 @Injectable()
 export class ChatService {
-  private socket: WebSocket;
+
+  private websocketSubject: WebSocketSubject<any>
 
   public constructor() {
-    this.socket = new WebSocket("ws://localhost:8081/ws/1");
-    this.socket.onopen = event => {
-      let auth = new Auth(true, "");
-      console.log("sending socket the empty auth");
-      this.socket.send(JSON.stringify(auth));
-    };
-    this.socket.onclose = event => {
-      console.log("on close: ", event);
-    };
-    this.socket.onmessage = event => {
-      console.log("on message", JSON.parse(event.data));
-    };
+    this.websocketSubject = webSocket("ws://localhost:8081/ws/1");
+    let auth = new Auth(false, "");
+    let authMessage = JSON.stringify(auth);
+    console.log("sending auth message: ", auth);
+    this.websocketSubject.next(auth);
+    this.websocketSubject.subscribe(
+      msg => console.log("message received: " + msg),
+      err => console.log("error: " + err),
+      () => console.log("connection closed")
+    );
   }
 
   public send(data: string) {
-    console.log("sending from somewhere idk where: ", data);
-    this.socket.send(data);
+    this.websocketSubject.next(data);
   }
 
   public close() {
-    this.socket.close();
+    this.websocketSubject.complete();
   }
 }
