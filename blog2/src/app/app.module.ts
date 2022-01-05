@@ -15,6 +15,7 @@ import { MainBannerComponent } from './main-banner/main-banner.component';
 import { BlogHighlightComponent } from './blog-highlight/blog-highlight.component';
 import { RouterModule } from '@angular/router';
 import { BlogListComponent } from './blog-list/blog-list.component';
+import { ChatComponent } from './chat/chat.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { BlogListComponent } from './blog-list/blog-list.component';
     NavigationBarComponent,
     MainBannerComponent,
     BlogHighlightComponent,
-    BlogListComponent
+    BlogListComponent,
+    ChatComponent
   ],
   imports: [
     BrowserModule,

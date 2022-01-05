@@ -5,14 +5,14 @@ import { ChatService } from "./chat.service";
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  providers:[ChatService]
+  providers: [ChatService],
 })
 export class AppComponent {
   constructor(private chatService: ChatService) {}
 
   private message = {
-    author: "byron",
-    message: "this is a test message"
+    author: 'byron',
+    message: 'this is a test message',
   };
 
   sendMsg() {

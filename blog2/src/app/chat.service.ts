@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Subject } from "rxjs";
-import { map } from "rxjs/operators";
+import { Observer, Subscription } from "rxjs";
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 
 const CHAT_URL = "ws://localhost:8081/ws/1";
@@ -27,23 +26,25 @@ export class ChatService {
   public constructor() {
     this.websocketSubject = webSocket("ws://localhost:8081/ws/1");
     let auth = new Auth(false, "");
-    let authMessage = JSON.stringify(auth);
     console.log("sending auth message: ", auth);
     this.websocketSubject.next(auth);
-    this.websocketSubject.subscribe(
-      msg => console.log("message received: " + msg),
-      err => console.log("error: " + err),
-      () => console.log("connection closed")
-    );
+    //this.websocketSubject.subscribe(
+      //next => console.log(next)
+    //);
+  }
 
-    const someSubscription = this.websocketSubject.subscribe(data => {})
+  public subscribe(observer: Observer<any>) : Subscription {
+    console.log("subscribing");
+    return this.websocketSubject.subscribe(observer);
   }
 
   public send(data: any) {
+    console.log("sending: ", data);
     this.websocketSubject.next(data);
   }
 
   public close() {
+    console.log("closing socket");
     this.websocketSubject.complete();
   }
 }
